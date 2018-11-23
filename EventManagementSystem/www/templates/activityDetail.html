@@ -1,19 +1,23 @@
-<ion-view title="Activity Detail" id="page10">
+<ion-view title="{{feed.name}}" id="page10">
   <ion-content padding="true" class="has-header">
     <div class="list card" id="activityDetail-card22">
-      <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-        <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+      <div style="margin: 0px; background-color: rgb(232, 235, 239); text-align: center;">
+        <!-- <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i> -->
+        <img ng-src="{{feed.img_url}}" style="width:100%">
       </div>
       <div class="item item-body" id="activityDetail-list-item-container4">
         <div id="activityDetail-markdown5" class="show-list-numbers-and-dots">
-          <p style="margin-top:0px;color:#000000;">Some friendly
-            <strong>markdown</strong>
+          <p style="margin-top:0px;color:#000000;">
+            <strong>{{feed.name}}</strong>
+          </p>
+          <p style="margin-top:0px;color:#000000;">
+            {{feed.full_description}}
           </p>
         </div>
       </div>
-      <ion-item class="item-icon-left assertive" id="activityDetail-list-item11">
-        <i class="icon ion-android-add"></i>Register</ion-item>
-      <ion-item class="item-icon-left positive" id="activityDetail-list-item12">
+      <ion-item class="item-icon-left assertive" id="activityDetail-list-item11" ng-click="detailClick()">
+        <i class="icon ion-android-add"></i>{{feed.registered==false?'Register':'Cancel'}}</ion-item>
+      <ion-item class="item-icon-left positive" id="activityDetail-list-item12" ui-sref="tabsController.map()">
         <i class="icon ion-ios-location"></i>Address</ion-item>
     </div>
   </ion-content>

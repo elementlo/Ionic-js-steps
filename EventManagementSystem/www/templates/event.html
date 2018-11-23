@@ -1,13 +1,20 @@
 <ion-view title="Event" id="page2">
   <ion-content padding="true" class="has-header">
-    <div class="list card" id="event-card21">
-      <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-        <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+    <div class="list card" id="event-card21" ng-repeat="feed in feeds" ui-sref="tabsController.activityDetail({ id: feed.id })">
+      <div style="margin: 0px; background-color: rgb(232, 235, 239); text-align: center;">
+        <!-- <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i> -->
+        <img ng-src="{{feed.img_url}}" style="width:100%">
       </div>
       <div class="item item-body" id="event-list-item-container2">
         <div id="event-markdown2" class="show-list-numbers-and-dots">
-          <p style="margin-top:0px;color:#000000;">Some friendly
-            <strong>markdown</strong>
+          <p style="margin-top:0px;color:#000000;">
+            <strong>{{feed.name}}</strong>
+          </p>
+          <p style="margin-top:0px;color:#000000;">
+            Venue: {{feed.venue}}
+          </p>
+          <p style="margin-top:0px;color:#000000;">
+            Date: {{feed.event_date}}
           </p>
         </div>
       </div>
