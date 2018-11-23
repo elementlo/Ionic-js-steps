@@ -15,18 +15,14 @@ angular.module('app.controllers', [])
   .controller('organizerCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams) {
-
-
-    }
+    function ($scope, $stateParams) {}
   ])
 
-  .controller('venueCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('venueCtrl', ['$scope', '$stateParams', 'VenueServie', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams) {
-
-
+    function ($scope, $stateParams, VenueServie) {
+      $scope.venueList = VenueServie.getVenueNames()
     }
   ])
 
@@ -69,12 +65,19 @@ angular.module('app.controllers', [])
     }
   ])
 
-  .controller('activityCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('activityCtrl', ['$scope', '$stateParams', '$http', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams) {
-
-
+    function ($scope, $stateParams, $http) {
+      $http.get("http://localhost:1337/")
+        .then(function (response) {
+          var activities = response.data;
+          if ($stateParams.id == 0) {
+            $scope.activityList = [activities[0], activities[1]]
+          } else {
+            $scope.activityList = [activities[2], activities[3]]
+          }
+        });
     }
   ])
 
@@ -134,51 +137,7 @@ angular.module('app.controllers', [])
           });
         }
       }
-      $scope.registerActivity = function () {
-        var confirmRegister = $ionicPopup.confirm({
-          title: 'Register this event?',
-          template: 'Are you sure?'
-        });
-        confirmRegister.then(function (res) {
-          if (res) {
-            console.log($scope.data);
-            $http.post("http://localhost:1337/user/" + localStorage.getItem('username') + "/register/add/" + $stateParams.id).then(function (response) {
-              $scope.registerResult = response.data;
-              console.log($scope.registerResult)
-              if ($scope.registerResult == "Not enough quota") {
-                var notEnough = $ionicPopup.confirm({
-                  template: 'Not enough quota'
-                });
-              } else {
-                var successful = $ionicPopup.confirm({
-                  template: 'Registered successfully.'
-                });
-                // history.go(0)
-              }
 
-            });
-          }
-        });
-      }
-      $scope.cancelActivity = function () {
-        var cancelRegister = $ionicPopup.confirm({
-          title: 'Cancel this event?',
-          template: 'Are you sure?'
-        });
-        cancelRegister.then(function (res) {
-          if (res) {
-            console.log($scope.data);
-            $http.post("http://localhost:1337/user/" + localStorage.getItem('username') + "/register/remove/" + $stateParams.id).then(function (response) {
-              $scope.registerResult = response.data; //"/user/" + username + "/register/remove/" + id
-              console.log($scope.registerResult)
-              var cancel = $ionicPopup.confirm({
-                template: 'Cancel successfully.'
-              });
-              //history.go(0)
-            });
-          }
-        });
-      }
     }
   ])
 

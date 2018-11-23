@@ -1,4 +1,4 @@
-angular.module('app.routes', [])
+angular.module('app.routes', ['ionicUIRouter'])
 
   .config(function ($stateProvider, $urlRouterProvider) {
 
@@ -7,7 +7,6 @@ angular.module('app.routes', [])
     // Set up the various states which the app can be in.
     // Each state's controller can be found in controllers.js
     $stateProvider
-
 
       .state('tabsController.event', {
         url: '/page2',
@@ -61,10 +60,18 @@ angular.module('app.routes', [])
         }
       })
 
-      .state('activity', {
-        url: '/page9',
-        templateUrl: 'templates/activity.html',
-        controller: 'activityCtrl'
+      .state('tabsController.activity', {
+        url: '/page9/:id',
+        views: {
+          'tab2': {
+            templateUrl: 'templates/activity.html',
+            controller: 'activityCtrl'
+          },
+          'tab3': {
+            templateUrl: 'templates/activity.html',
+            controller: 'activityCtrl'
+          },
+        }
       })
 
       .state('tabsController.activityDetail', {
@@ -73,7 +80,19 @@ angular.module('app.routes', [])
           'tab1': {
             templateUrl: 'templates/activityDetail.html',
             controller: 'activityDetailCtrl'
-          }
+          },
+          'tab2': {
+            templateUrl: 'templates/activityDetail.html',
+            controller: 'activityDetailCtrl'
+          },
+          'tab3': {
+            templateUrl: 'templates/activityDetail.html',
+            controller: 'activityDetailCtrl'
+          },
+          'tab4': {
+            templateUrl: 'templates/activityDetail.html',
+            controller: 'activityDetailCtrl'
+          },
         }
 
       })
