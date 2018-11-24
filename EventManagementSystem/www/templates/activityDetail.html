@@ -17,7 +17,7 @@
       </div>
       <ion-item class="item-icon-left assertive" id="activityDetail-list-item11" ng-click="detailClick()">
         <i class="icon ion-android-add"></i>{{feed.registered==false?'Register':'Cancel'}}</ion-item>
-      <ion-item class="item-icon-left positive" id="activityDetail-list-item12" ui-sref="tabsController.map()">
+      <ion-item class="item-icon-left positive" id="activityDetail-list-item12" ui-sref="tabsController.map({venueName:feed.venue})">
         <i class="icon ion-ios-location"></i>Address</ion-item>
     </div>
   </ion-content>

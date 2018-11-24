@@ -81,6 +81,17 @@ angular.module('app.controllers', [])
     }
   ])
 
+  .controller('registeredEventCtrl', ['$scope', '$stateParams', '$http', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+    // You can include any angular dependencies as parameters for this function
+    // TIP: Access Route Parameters for your page via $stateParams.parameterName
+    function ($scope, $stateParams, $http) {
+      $http.get("http://localhost:1337/user/registrationDetail/" + localStorage.getItem('username') + "/register")
+        .then(function (response) {
+          $scope.activities = response.data[0].register;
+        });
+    }
+  ])
+
   .controller('activityDetailCtrl', ['$scope', '$stateParams', '$http', '$ionicPopup', '$ionicHistory', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
@@ -106,7 +117,12 @@ angular.module('app.controllers', [])
                 var cancel = $ionicPopup.confirm({
                   template: 'Cancel successfully.'
                 });
-                history.go(0)
+                $http.get("http://localhost:1337/activity/detail/" + localStorage.getItem('username') + "/" + $stateParams.id) ///activity/detail/:username/:id
+                  .then(function (response) {
+                    $scope.feed = response.data;
+                    console.log($scope.feed)
+                  });
+                //history.go(0)
               });
             }
           });
@@ -129,7 +145,12 @@ angular.module('app.controllers', [])
                   var successful = $ionicPopup.confirm({
                     template: 'Registered successfully.'
                   });
-                  history.go(0)
+                  $http.get("http://localhost:1337/activity/detail/" + localStorage.getItem('username') + "/" + $stateParams.id) ///activity/detail/:username/:id
+                    .then(function (response) {
+                      $scope.feed = response.data;
+                      console.log($scope.feed)
+                    });
+                  //history.go(0)
                 }
 
               });
@@ -141,14 +162,13 @@ angular.module('app.controllers', [])
     }
   ])
 
-  .controller('userInformationCtrl', ['$scope', '$stateParams', '$http', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('userInformationCtrl', ['$scope', '$stateParams', '$http', '$state', '$ionicPopup', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams, $http, $state) {
+    function ($scope, $stateParams, $http, $state, $ionicPopup) {
       $scope.username = localStorage.getItem('username')
 
       $scope.logout = function () {
-
         $http.post("http://localhost:1337/user/logout", $scope.data)
           .then(function (response) {
             //$cookies.put('username',$scope.data.username)
@@ -161,19 +181,36 @@ angular.module('app.controllers', [])
               template: 'Login failed. Please try again.'
             });
           });
-
+      }
+      $scope.myRegisteredEvent = function () {
+        if (localStorage.getItem('username') == 'student') {
+          $state.go('tabsController.registeredEvent')
+        } else {
+          var alertPopup = $ionicPopup.alert({
+            template: 'You have not logged in yet.'
+          });
+        }
       }
 
     }
   ])
 
-  .controller('mapCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('mapCtrl', ['$scope', '$stateParams', 'VenueServie', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams) {
+    function ($scope, $stateParams, VenueServie) {
+      var venueID;
+      if ($stateParams.venueName == 'OEE1007') {
+        venueID = 'Oen Hall Building (East)'
+      } else if ($stateParams.venueName == 'AAB601') {
+        venueID = 'Academic and Administration Building'
+      } else if ($stateParams.venueName == 'LT1') {
+        venueID = 'Joint Sports Centre'
+      }
+      console.log("location: " + VenueServie.getVenueNames(venueID)[0].Latitude)
       var map = L.map('map').setView([22.337827, 114.181962], 17);
-      L.marker([22.341072, 114.179645]).addTo(map)
-        .bindPopup('AC Hall');
+      L.marker([VenueServie.getVenueLocation(venueID)[0].Latitude, VenueServie.getVenueLocation(venueID)[0].Longitude]).addTo(map)
+        .bindPopup($stateParams.venueName);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);

@@ -74,6 +74,16 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      .state('tabsController.registeredEvent', {
+        url: '/page12',
+        views: {
+          'tab4': {
+            templateUrl: 'templates/registeredEvent.html',
+            controller: 'registeredEventCtrl'
+          },
+        }
+      })
+
       .state('tabsController.activityDetail', {
         url: '/page10/:id',
         views: {
@@ -108,7 +118,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       })
 
       .state('tabsController.map', {
-        url: '/page5',
+        url: '/page5/:venueName',
         views: {
           'tab1': {
             templateUrl: 'templates/map.html',

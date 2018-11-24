@@ -193,6 +193,12 @@ angular.module('app.services', [])
       this.getVenueNames = function () {
         return venue_items;
       }
+
+      this.getVenueLocation = function(venueName){
+        return venue_items.filter(function (item) {
+            return item.VenueName === venueName;
+          });
+      }
     }
   ])
   .service('BlankService', [function () {

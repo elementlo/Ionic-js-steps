@@ -1,0 +1,7 @@
+<ion-view title="Registered Event" id="page12">
+    <ion-content padding="true" class="has-header">
+      <ion-list id="registeredEvent-list5" ng-repeat="activity in activities">
+        <ion-item id="registeredEvent-list-item7" ui-sref="tabsController.activityDetail({ id: activity.id })">{{activity.name}}</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-view>
