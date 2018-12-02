@@ -195,10 +195,10 @@ angular.module('app.controllers', [])
     }
   ])
 
-  .controller('mapCtrl', ['$scope', '$stateParams', 'VenueServie', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('mapCtrl', ['$scope', '$stateParams', 'VenueServie','$ionicTabsDelegate', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams, VenueServie) {
+    function ($scope, $stateParams, VenueServie,$ionicTabsDelegate) {
       var venueID;
       if ($stateParams.venueName == 'OEE1007') {
         venueID = 'Oen Hall Building (East)'
@@ -208,11 +208,11 @@ angular.module('app.controllers', [])
         venueID = 'Joint Sports Centre'
       }
       console.log("location: " + VenueServie.getVenueNames(venueID)[0].Latitude)
-      var map = L.map('map').setView([22.337827, 114.181962], 17);
-      L.marker([VenueServie.getVenueLocation(venueID)[0].Latitude, VenueServie.getVenueLocation(venueID)[0].Longitude]).addTo(map)
-        .bindPopup($stateParams.venueName);
+      var map = L.map(document.querySelector('[name="tab'+($ionicTabsDelegate.selectedIndex()+1)+'"] #map')).setView([22.337827, 114.181962], 17);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
+      L.marker([VenueServie.getVenueLocation(venueID)[0].Latitude, VenueServie.getVenueLocation(venueID)[0].Longitude]).addTo(map)
+      .bindPopup($stateParams.venueName);
     }
   ])
